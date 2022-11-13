@@ -1,4 +1,3 @@
-//ABI - POST
 const express = require("express")
 const mongoose = require("mongoose")
 const Cliente = require("./Cliente")
