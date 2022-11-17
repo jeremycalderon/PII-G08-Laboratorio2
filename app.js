@@ -71,8 +71,8 @@ app.patch('/clientes/:id', async (req, res) => {
       edad
     }
     try {
-      const updatePerson = await Cliente.updateOne({_id: id}, cliente)
-      if(updatePerson.matchedCount === 0){
+      const updateCliente = await Cliente.updateOne({_id: id}, cliente)
+      if(updateCliente.matchedCount === 0){
         res.status(422).json({ message: 'Usuario no encontrado'})
         return
       }
@@ -98,7 +98,7 @@ app.delete('/clientes/:id', async (req,res) => {
     } catch (error) {
       res.status(500).json({error: error})
     } 
-  })
+})
   
 
 mongoose.connect(
