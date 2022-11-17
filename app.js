@@ -10,7 +10,7 @@ const DB_PASSWORD = "grupo08"
 app.use(express.json())
 
 app.get('/', (req, res) => {
-    res.json ({ message: 'hello express'})
+    res.json ({ message: 'Welcome to the Clients page'})
 })
 
 //CREATE
