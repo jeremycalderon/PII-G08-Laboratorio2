@@ -93,7 +93,7 @@ app.delete('/clientes/:id', async (req,res) => {
     }
     try {
       await Cliente.deleteOne({_id : id})
-      res.status(200).json({delete : 'Cliente eliminado'})
+      res.status(200).json({message : 'Cliente eliminado'})
       
     } catch (error) {
       res.status(500).json({error: error})
