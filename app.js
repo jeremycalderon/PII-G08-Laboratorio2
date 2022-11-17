@@ -10,7 +10,32 @@ const DB_PASSWORD = "grupo08"
 app.use(express.json())
 
 app.get('/', (req, res) => {
-    res.json ({ message: 'Welcome to the Clients page'})
+    res.json ({ message: 'Bienvenido a la pagina principal de clientes'})
+})
+
+//TOTAL READ
+app.get("/clientes", async (req, res) => {
+    try {
+        const clientes = await Cliente.find()
+        res.status(200).json(clientes)
+    } catch (error) {
+        res.status(500).json({error: error})
+    }
+})
+
+//READ CLIENTE
+app.get('/clientes/:id', async (req, res) => {
+    const id = req.params.id
+    try {
+        const cliente = await Cliente.findOne({_id: id})
+        if(!cliente){
+            res.status(422).json({ message: 'Usuario no encontrado'})
+            return
+        }
+        res.status(200).json(cliente)
+    } catch (error) {
+        res.status(500).json({error: error})
+    }
 })
 
 //CREATE
@@ -35,31 +60,6 @@ app.post("/clientes", async (req, res) => {
     
 })
 
-//TOTAL READ
-app.get("/clientes", async (req, res) => {
-    try {
-        const clientes = await Cliente.find()
-        res.status(200).json(clientes)
-    } catch (error) {
-        res.status(500).json({error: error})
-    }
-})
-
-//READ CLIENTE
-app.get('/Clientes/:id', async (req, res) => {
-    const id = req.params.id
-    try {
-        const cliente = await Cliente.findOne({_id: id})
-        if(!cliente){
-            res.status(422).json({ message: 'Usuario no encontrado'})
-            return
-        }
-        res.status(200).json(cliente)
-    } catch (error) {
-        res.status(500).json({error: error})
-    }
-})
-
 //UPDATE
 app.patch('/clientes/:id', async (req, res) => {
     const id = req.params.id
@@ -81,6 +81,25 @@ app.patch('/clientes/:id', async (req, res) => {
       res.status(500).json({ error: error})
     }
 })
+
+//DELETE
+
+app.delete('/clientes/:id', async (req,res) => {
+    const id = req.params.id
+    const cliente = await Cliente.deleteOne({_id : id})
+    if(!cliente){
+      res.status(422).json({ message : 'Cliente no encontrado'})
+      return
+    }
+    try {
+      await Cliente.deleteOne({_id : id})
+      res.status(200).json({delete : 'Cliente eliminado'})
+      
+    } catch (error) {
+      res.status(500).json({error: error})
+    } 
+  })
+  
 
 mongoose.connect(
     `mongodb://${DB_USER}:${DB_PASSWORD}@ac-xega4kg-shard-00-00.gadvzad.mongodb.net:27017,ac-xega4kg-shard-00-01.gadvzad.mongodb.net:27017,ac-xega4kg-shard-00-02.gadvzad.mongodb.net:27017/?ssl=true&replicaSet=atlas-x26kv1-shard-0&authSource=admin&retryWrites=true&w=majority`
